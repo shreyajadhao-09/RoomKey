@@ -10,11 +10,24 @@ const listingSchema = new Schema({
   description: String,
   image: {
     url: String,
-    filename: String
+    filename: String,
   },
   price: Number,
   location: String,
   country: String,
+
+  geometry: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      default: "Point",
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
+
   reviews: [
     {
       type: Schema.Types.ObjectId,
@@ -24,16 +37,14 @@ const listingSchema = new Schema({
   owner: {
     type: Schema.Types.ObjectId,
     ref: "User",
-  }
-
+  },
 });
 
-listingSchema.post("findOneAndDelete", async(listing) =>{
-  if(listing){
-    await Review.deleteMany({_id: {$in: listing.reviews}});
+listingSchema.post("findOneAndDelete", async (listing) => {
+  if (listing) {
+    await Review.deleteMany({ _id: { $in: listing.reviews } });
   }
-})
-
+});
 
 const Listing = mongoose.model("Listing", listingSchema);
 module.exports = Listing;

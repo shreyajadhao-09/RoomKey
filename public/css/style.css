@@ -104,3 +104,9 @@ body {
     padding-right: 0;
     padding-left: 0;
 }
+#map{
+    height:400px;
+    width:100%;
+    border-radius:12px;
+    margin-top:15px;
+}

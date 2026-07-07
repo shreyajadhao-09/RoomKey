@@ -1,5 +1,8 @@
 const Listing = require("../models/listing");
 
+const { config, geocoding } = require("@maptiler/client");
+config.apiKey = process.env.MAPTILER_API_KEY;
+
 module.exports.index = async (req, res) => {
   let allListings = await Listing.find({});
   res.render("listings/index.ejs", { allListings });
@@ -24,16 +27,44 @@ module.exports.showListing = async (req, res) => {
     return res.redirect("/listings");
   }
   // console.log(listing);
-  res.render("listings/show.ejs", { listing });
+  res.render("listings/show.ejs", { listing,  mapToken: process.env.MAPTILER_API_KEY, });
 };
+
+// module.exports.createLiating = async (req, res, next) => {
+//   let url = req.file.path;
+//   let filename = req.file.filename;
+//   const newListing = new Listing(req.body.listing);
+//   newListing.image = { url, filename };
+//   newListing.owner = req.user._id;
+//   await newListing.save();
+//   req.flash("success", "New Listing Created!");
+//   res.redirect("/listings");
+// };
 
 module.exports.createLiating = async (req, res, next) => {
   let url = req.file.path;
   let filename = req.file.filename;
+
   const newListing = new Listing(req.body.listing);
+
+  // Get coordinates from MapTiler
+  const result = await geocoding.forward(newListing.location);
+
+  if (!result.features || result.features.length === 0) {
+    req.flash("error", "Invalid location.");
+    return res.redirect("/listings/new");
+  }
+
+  newListing.geometry = {
+    type: "Point",
+    coordinates: result.features[0].geometry.coordinates,
+  };
+
   newListing.image = { url, filename };
   newListing.owner = req.user._id;
+
   await newListing.save();
+
   req.flash("success", "New Listing Created!");
   res.redirect("/listings");
 };
