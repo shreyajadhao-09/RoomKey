@@ -26,8 +26,10 @@ module.exports.showListing = async (req, res) => {
     req.flash("error", "Listing you requested for does not exist");
     return res.redirect("/listings");
   }
-  // console.log(listing);
-  res.render("listings/show.ejs", { listing,  mapToken: process.env.MAPTILER_API_KEY, });
+  res.render("listings/show.ejs", {
+    listing,
+    mapToken: process.env.MAPTILER_API_KEY,
+  });
 };
 
 // module.exports.createLiating = async (req, res, next) => {
@@ -98,14 +100,10 @@ module.exports.updateListing = async (req, res) => {
 module.exports.destroyListing = async (req, res) => {
   let { id } = req.params;
   let DeleteListing = await Listing.findByIdAndDelete(id);
-  console.log(DeleteListing);
   req.flash("success", "Listing Deleted!");
   res.redirect("/listings");
 };
-
-
-
-
+//search
 module.exports.searchListings = async (req, res) => {
   const { query } = req.query;
 

@@ -118,7 +118,7 @@
                                         <script>
                                             window.coordinates = <%= JSON.stringify(listing.geometry.coordinates) %>;
                                             window.mapToken = "<%= process.env.MAPTILER_API_KEY %>";
-                                              window.listingLocation = "<%= listing.location %>, <%= listing.country %>";
+                                            window.listingLocation = "<%= listing.location %>, <%= listing.country %>";
                                         </script>
 
                                         <!-- MapTiler SDK -->

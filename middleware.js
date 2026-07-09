@@ -9,16 +9,16 @@ module.exports.isLoggedIn = (req, res, next) => {
     return res.redirect("/login");
   }
   next();
-}
+};
 
 module.exports.saveRedirectUrl = (req, res, next) => {
   if (req.session.redirectUrl) {
     res.locals.redirectUrl = req.session.redirectUrl;
   }
   return next();
-}
+};
 
-module.exports.isOwner = async(req, res, next) => {
+module.exports.isOwner = async (req, res, next) => {
   let { id } = req.params;
   let listing = await Listing.findById(id);
   if (!listing.owner.equals(res.locals.currUser._id)) {
@@ -26,7 +26,7 @@ module.exports.isOwner = async(req, res, next) => {
     return res.redirect(`/listings/${id}`);
   }
   next();
-}
+};
 
 module.exports.validateListing = (req, res, next) => {
   let { error } = listingSchema.validate(req.body);
@@ -48,7 +48,7 @@ module.exports.validateReview = (req, res, next) => {
   }
 };
 
-module.exports.isReviewAuthor = async(req, res, next) => {
+module.exports.isReviewAuthor = async (req, res, next) => {
   let { id, reviewId } = req.params;
   let listing = await Review.findById(reviewId);
   if (!review.author.equals(res.locals.currUser._id)) {
@@ -56,4 +56,4 @@ module.exports.isReviewAuthor = async(req, res, next) => {
     return res.redirect(`/listings/${id}`);
   }
   next();
-}
+};
