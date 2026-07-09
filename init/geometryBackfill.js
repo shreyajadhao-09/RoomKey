@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const Listing = require("../models/listing.js");
+const dns = require("dns");
 require("dotenv").config();
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust"; // match whatever you use in app.js
+const MONGO_URL = process.env.ATLASDB_URL;
 
 async function main() {
   await mongoose.connect(MONGO_URL);
