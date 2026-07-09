@@ -20,8 +20,8 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
-const dns = require("dns");
-dns.setServers(["8.8.8.8", "1.1.1.1"]);
+// const dns = require("dns");
+// dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 const listingsRouter = require("./routes/listing.js");
 const reviewsRouter = require("./routes/review.js");
